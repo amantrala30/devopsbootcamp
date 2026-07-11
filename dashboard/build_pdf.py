@@ -25,46 +25,47 @@ import io
 PAGE_W, PAGE_H = landscape(A4)   # 841.89 x 595.28 pts
 M = 28                            # margin
 
-# ── Palette ──────────────────────────────────────────────────────────────────
-C_BG      = colors.HexColor("#0F1117")
-C_SURFACE = colors.HexColor("#1A1D27")
-C_SURF2   = colors.HexColor("#22263A")
-C_BORDER  = colors.HexColor("#2E3350")
+# ── Palette (Light Theme) ─────────────────────────────────────────────────────
+C_BG      = colors.HexColor("#F0F6FF")   # very light blue page background
+C_SURFACE = colors.HexColor("#0F172A")   # white card
+C_SURF2   = colors.HexColor("#E5EEFC")   # light blue-gray alternate rows
+C_BORDER  = colors.HexColor("#C4D2EB")   # subtle border
 C_WHITE   = colors.white
-C_MUTED   = colors.HexColor("#8F96B3")
-C_ACCENT  = colors.HexColor("#4F8EF7")
-C_GREEN   = colors.HexColor("#22C55E")
-C_YELLOW  = colors.HexColor("#F59E0B")
-C_RED     = colors.HexColor("#EF4444")
-C_PURPLE  = colors.HexColor("#A855F7")
-C_GDIM    = colors.HexColor("#165B35")
-C_YDIM    = colors.HexColor("#784B05")
-C_RDIM    = colors.HexColor("#7A1D1D")
-C_BDIM    = colors.HexColor("#1E3A7A")
+C_TEXT    = colors.HexColor("#0F172A")   # near-black primary text
+C_MUTED   = colors.HexColor("#4A5A82")   # medium blue-gray secondary text
+C_ACCENT  = colors.HexColor("#2563EB")   # strong blue
+C_GREEN   = colors.HexColor("#16803D")   # dark green (readable on light)
+C_YELLOW  = colors.HexColor("#D97706")   # amber (readable on light)
+C_RED     = colors.HexColor("#DC2626")   # red
+C_PURPLE  = colors.HexColor("#6D28D9")   # purple
+C_GDIM    = colors.HexColor("#DCFCE7")   # light green tint
+C_YDIM    = colors.HexColor("#FEF3C7")   # light yellow tint
+C_RDIM    = colors.HexColor("#FEE2E2")   # light red tint
+C_BDIM    = colors.HexColor("#DBEAFE")   # light blue tint
 
 # ── Styles ───────────────────────────────────────────────────────────────────
 
 def make_styles():
     s = {}
-    base = dict(fontName="Helvetica", textColor=C_WHITE, backColor=C_BG, leading=14)
+    base = dict(fontName="Helvetica", textColor=C_TEXT, backColor=C_BG, leading=14)
 
     s["h1"]    = ParagraphStyle("h1",    fontSize=22, fontName="Helvetica-Bold",
-                                textColor=C_WHITE, leading=28, spaceAfter=4)
+                                textColor=C_TEXT, leading=28, spaceAfter=4)
     s["h2"]    = ParagraphStyle("h2",    fontSize=15, fontName="Helvetica-Bold",
-                                textColor=C_WHITE, leading=20, spaceAfter=4)
+                                textColor=C_TEXT, leading=20, spaceAfter=4)
     s["h3"]    = ParagraphStyle("h3",    fontSize=11, fontName="Helvetica-Bold",
-                                textColor=C_WHITE, leading=15, spaceAfter=2)
+                                textColor=C_TEXT, leading=15, spaceAfter=2)
     s["body"]  = ParagraphStyle("body",  fontSize=9,  fontName="Helvetica",
                                 textColor=C_MUTED, leading=13, spaceAfter=2)
     s["bodyW"] = ParagraphStyle("bodyW", fontSize=9,  fontName="Helvetica",
-                                textColor=C_WHITE, leading=13, spaceAfter=2)
+                                textColor=C_TEXT, leading=13, spaceAfter=2)
     s["label"] = ParagraphStyle("label", fontSize=7,  fontName="Helvetica-Bold",
                                 textColor=C_MUTED, leading=10, spaceAfter=2,
                                 wordWrap="CJK")
     s["small"] = ParagraphStyle("small", fontSize=7.5, fontName="Helvetica",
                                 textColor=C_MUTED, leading=10)
     s["center"]= ParagraphStyle("center",fontSize=9,  fontName="Helvetica",
-                                textColor=C_WHITE, alignment=TA_CENTER, leading=13)
+                                textColor=C_TEXT, alignment=TA_CENTER, leading=13)
     s["accent"]= ParagraphStyle("accent",fontSize=9,  fontName="Helvetica-Bold",
                                 textColor=C_ACCENT, leading=13)
     s["green"] = ParagraphStyle("green", fontSize=9,  fontName="Helvetica-Bold",
@@ -130,14 +131,14 @@ class SlideHeader(Flowable):
         c.setFillColor(C_ACCENT)
         c.rect(0, 0, 4, self.h, fill=1, stroke=0)
         c.setFont("Helvetica-Bold", 13)
-        c.setFillColor(C_WHITE)
+        c.setFillColor(C_TEXT)
         c.drawString(10, 8, self.title)
         if self.badge_text:
             bw = len(self.badge_text) * 5.5 + 14
             bx = self.w - bw - 4
-            c.setFillColor(colors.HexColor("#784B05") if self.badge_color == C_YELLOW
-                           else colors.HexColor("#165B35") if self.badge_color == C_GREEN
-                           else colors.HexColor("#7A1D1D") if self.badge_color == C_RED
+            c.setFillColor(C_YDIM if self.badge_color == C_YELLOW
+                           else C_GDIM if self.badge_color == C_GREEN
+                           else C_RDIM if self.badge_color == C_RED
                            else C_BDIM)
             c.roundRect(bx, 4, bw, 18, 3, fill=1, stroke=0)
             c.setFillColor(self.badge_color)
@@ -202,7 +203,7 @@ class KPICard(Flowable):
         c.setFillColor(C_MUTED)
         c.setFont("Helvetica-Bold", 6.5)
         c.drawString(8, self.h - 16, self.label.upper())
-        c.setFillColor(C_WHITE)
+        c.setFillColor(self.accent)
         c.setFont("Helvetica-Bold", 17)
         c.drawString(8, self.h - 38, self.value)
         c.setFillColor(C_MUTED)
@@ -219,14 +220,17 @@ def dark_bg(canvas, doc):
     canvas.saveState()
     canvas.setFillColor(C_BG)
     canvas.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
-    # Footer line
+    # Footer bar
+    canvas.setFillColor(C_SURF2)
+    canvas.rect(0, 0, PAGE_W, 24, fill=1, stroke=0)
+    # Footer top line
     canvas.setStrokeColor(C_BORDER)
     canvas.setLineWidth(0.5)
-    canvas.line(M, 18, PAGE_W - M, 18)
+    canvas.line(0, 24, PAGE_W, 24)
     # Page number
     canvas.setFillColor(C_MUTED)
     canvas.setFont("Helvetica", 7)
-    canvas.drawCentredString(PAGE_W / 2, 7,
+    canvas.drawCentredString(PAGE_W / 2, 8,
         f"Radiological Health Program Modernization  ·  Executive Status Report  ·  Page {doc.page}")
     canvas.restoreState()
 
@@ -264,7 +268,7 @@ def page_title(story):
             c.setFillColor(C_ACCENT)
             c.rect(0, 0, 5, 320, fill=1, stroke=0)
             # Title
-            c.setFillColor(C_WHITE)
+            c.setFillColor(C_TEXT)
             c.setFont("Helvetica-Bold", 28)
             c.drawString(22, 250, "Radiological Health Program")
             c.setFillColor(C_ACCENT)
@@ -290,7 +294,7 @@ def page_title(story):
             c.drawString(22, 102, "Maryland Department of the Environment (MDE)  \u00b7  PCA: 79103  \u00b7  Radiation Control Fund")
             c.drawString(22, 86, "Prepared for Executive Review  \u00b7  July 10, 2026")
             # Watermark symbol
-            c.setFillColor(colors.HexColor("#1A1F35"))
+            c.setFillColor(colors.HexColor("#C0D4F0"))
             c.setFont("Helvetica-Bold", 110)
             c.drawCentredString(w - 110, 155, "\u2622")
 
@@ -369,7 +373,7 @@ def page_overview(story):
     rationale = Table([[
         Paragraph(
             "<b><font color='#F59E0B'>⚠ WHY YELLOW?</font></b><br/>"
-            "<font color='#CCD1E8'>Environment and resource changes have been identified during the reporting period. "
+            "<font color='#4A5A82'>Environment and resource changes have been identified during the reporting period. "
             "These changes are not expected to impact overall project delivery. "
             "A Tech Lead is being hired to address environmental and build blockers, "
             "as key agency technical resources are engaged in other internal initiatives.</font>",
@@ -423,9 +427,9 @@ def page_sprints(story):
         txt_c = status_c[status]
         txt_hex = txt_c.hexval() if hasattr(txt_c, "hexval") else str(txt_c)
         rows.append([
-            Paragraph(f"<b><font color='#FFFFFF'>{name}</font></b>", ST["h3"]),
+            Paragraph(f"<b><font color='#0F172A'>{name}</font></b>", ST["h3"]),
             Paragraph(f"<font color='#8F96B3'>{dates}</font>", ST["small"]),
-            Paragraph(f"<font color='#CCD1E8'>{goal}</font>", ST["body"]),
+            Paragraph(f"<font color='#4A5A82'>{goal}</font>", ST["body"]),
             ProgressBar(120, pct, color=bar_color),
             Paragraph(f"<b><font color='{txt_hex}'>{status}</font></b>", ST["small"]),
         ])
@@ -493,15 +497,15 @@ def page_financials(story):
     header_style = ParagraphStyle("th", fontSize=7.5, fontName="Helvetica-Bold",
                                   textColor=C_MUTED, alignment=TA_CENTER)
     cell_style   = ParagraphStyle("td", fontSize=9, fontName="Helvetica",
-                                  textColor=C_WHITE, alignment=TA_RIGHT)
+                                  textColor=C_TEXT, alignment=TA_RIGHT)
     cell_style_l = ParagraphStyle("tdL", fontSize=9, fontName="Helvetica",
-                                  textColor=C_WHITE, alignment=TA_LEFT)
+                                  textColor=C_TEXT, alignment=TA_LEFT)
     green_style  = ParagraphStyle("tdG", fontSize=9, fontName="Helvetica-Bold",
                                   textColor=C_GREEN, alignment=TA_RIGHT)
     total_style  = ParagraphStyle("tdT", fontSize=9.5, fontName="Helvetica-Bold",
-                                  textColor=C_WHITE, alignment=TA_RIGHT)
+                                  textColor=C_TEXT, alignment=TA_RIGHT)
     total_styleL = ParagraphStyle("tdTL", fontSize=9.5, fontName="Helvetica-Bold",
-                                  textColor=C_WHITE, alignment=TA_LEFT)
+                                  textColor=C_TEXT, alignment=TA_LEFT)
 
     tbl_data = [[Paragraph(h, header_style) for h in headers]]
     for r_idx, row in enumerate(data):
@@ -522,7 +526,7 @@ def page_financials(story):
     col_w = [70, 100, 100, 100, 100, 195 - 10]
     fin_tbl = Table(tbl_data, colWidths=col_w)
     fin_ts = [
-        ("BACKGROUND",    (0, 0), (-1,  0), colors.HexColor("#0E1225")),
+        ("BACKGROUND",    (0, 0), (-1,  0), C_BDIM),
         ("BACKGROUND",    (0, 1), (-1, -2), C_SURFACE),
         ("ROWBACKGROUNDS",(0, 1), (-1, -2), [C_SURFACE, C_SURF2]),
         ("BACKGROUND",    (0, -1),(-1, -1), C_BDIM),
@@ -549,7 +553,7 @@ def page_financials(story):
         row_data = [[
             Paragraph(f"<font color='#8F96B3'>{fy}</font>", ST["small"]),
             ProgressBar(w - 120, pct, color=col, h=9),
-            Paragraph(f"<b><font color='#FFFFFF'>{pct}%</font></b>", ST["small"]),
+            Paragraph(f"<b><font color='#0F172A'>{pct}%</font></b>", ST["small"]),
         ]]
         u_tbl = Table(row_data, colWidths=[45, w - 120, 55])
         u_tbl.setStyle(TableStyle([
@@ -597,10 +601,10 @@ def page_mvp(story):
         hex_c = col.hexval() if hasattr(col, "hexval") else str(col)
         cell = Paragraph(
             f"<b><font color='{hex_c}' size='16'>{icon}</font>"
-            f"  <font color='#FFFFFF'>{name}</font></b><br/>"
-            f"<font color='#CCD1E8' size='8'>{desc}</font>",
+            f"  <font color='#0F172A'>{name}</font></b><br/>"
+            f"<font color='#4A5A82' size='8'>{desc}</font>",
             ParagraphStyle("cap", fontSize=9, fontName="Helvetica",
-                           textColor=C_WHITE, leading=14, leftIndent=4))
+                           textColor=C_TEXT, leading=14, leftIndent=4))
         row.append(cell)
         if len(row) == 3:
             cap_rows.append(row)
@@ -665,8 +669,8 @@ def page_risks(story):
         risk_data = [[
             Paragraph(
                 f"<b><font color='{hex_c}' size='7.5'>[{level}]</font></b><br/><br/>"
-                f"<b><font color='#FFFFFF' size='10'>{title}</font></b><br/>"
-                f"<font color='#CCD1E8' size='8.5'>{desc}</font>",
+                f"<b><font color='#0F172A' size='10'>{title}</font></b><br/>"
+                f"<font color='#4A5A82' size='8.5'>{desc}</font>",
                 ST["bodyW"]),
             Paragraph(
                 f"<font color='#8F96B3' size='7'>RESPONSE</font><br/>"
@@ -750,8 +754,8 @@ def page_successes(story):
         suc_data = [[
             Paragraph(f"<font size='22'>{icon}</font>", ST["center"]),
             Paragraph(
-                f"<b><font color='#FFFFFF' size='12'>{title}</font></b><br/>"
-                f"<font color='#CCD1E8' size='9'>{desc}</font>",
+                f"<b><font color='#0F172A' size='12'>{title}</font></b><br/>"
+                f"<font color='#4A5A82' size='9'>{desc}</font>",
                 ST["bodyW"]),
         ]]
         suc_tbl = Table(suc_data, colWidths=[50, w - 54], rowHeights=85)
@@ -797,7 +801,7 @@ def page_summary(story):
             f"<font color='#8F96B3' size='7'>{lbl.upper()}</font><br/>"
             f"<b><font color='{hex_c}' size='14'>{val}</font></b>",
             ParagraphStyle("sc2", fontSize=9, fontName="Helvetica",
-                           textColor=C_WHITE, alignment=TA_CENTER, leading=18)))
+                           textColor=C_TEXT, alignment=TA_CENTER, leading=18)))
 
     stat_tbl = Table([stat_cells], colWidths=[sw, sw, sw, sw], rowHeights=52)
     stat_ts = [
@@ -878,7 +882,7 @@ def page_summary(story):
         hex_c = col.hexval() if hasattr(col, "hexval") else str(col)
         ns_rows.append([
             Paragraph(f"<b><font color='{hex_c}'>●</font></b>", ST["center"]),
-            Paragraph(f"<b><font color='#FFFFFF'>{step}</font></b>", ST["bodyW"]),
+            Paragraph(f"<b><font color='#0F172A'>{step}</font></b>", ST["bodyW"]),
             Paragraph(f"<font color='{hex_c}'>{timeline}</font>", ST["bodyW"]),
             Paragraph(f"<font color='#8F96B3'>{detail}</font>", ST["body"]),
         ])

@@ -12,22 +12,23 @@ from pptx.chart.data import ChartData
 from pptx.enum.chart import XL_CHART_TYPE
 import copy
 
-# ── Palette ──────────────────────────────────────────────────────────────────
-BG_DARK    = RGBColor(0x0F, 0x11, 0x17)   # slide background
-SURFACE    = RGBColor(0x1A, 0x1D, 0x27)   # card fill
-SURFACE2   = RGBColor(0x22, 0x26, 0x3A)   # inner card
-BORDER     = RGBColor(0x2E, 0x33, 0x50)
+# ── Palette (Light Theme) ─────────────────────────────────────────────────────
+BG_DARK    = RGBColor(0xF0, 0xF6, 0xFF)   # very light blue page background
+SURFACE    = RGBColor(0xFF, 0xFF, 0xFF)   # white card
+SURFACE2   = RGBColor(0xE5, 0xEE, 0xFC)   # light blue-gray alternate rows
+BORDER     = RGBColor(0xC4, 0xD2, 0xEB)
 WHITE      = RGBColor(0xFF, 0xFF, 0xFF)
-MUTED      = RGBColor(0x8F, 0x96, 0xB3)
-ACCENT     = RGBColor(0x4F, 0x8E, 0xF7)   # blue
-GREEN      = RGBColor(0x22, 0xC5, 0x5E)
-YELLOW     = RGBColor(0xF5, 0x9E, 0x0B)
-RED        = RGBColor(0xEF, 0x44, 0x44)
-PURPLE     = RGBColor(0xA8, 0x55, 0xF7)
-GREEN_DIM  = RGBColor(0x16, 0x5B, 0x35)
-YELLOW_DIM = RGBColor(0x78, 0x4B, 0x05)
-RED_DIM    = RGBColor(0x7A, 0x1D, 0x1D)
-BLUE_DIM   = RGBColor(0x1E, 0x3A, 0x7A)
+TEXT       = RGBColor(0x0F, 0x17, 0x2A)   # near-black primary text
+MUTED      = RGBColor(0x4A, 0x5A, 0x82)   # medium blue-gray secondary text
+ACCENT     = RGBColor(0x25, 0x63, 0xEB)   # strong blue
+GREEN      = RGBColor(0x16, 0x80, 0x3D)   # dark green (readable on light)
+YELLOW     = RGBColor(0xD9, 0x77, 0x06)   # amber (readable on light)
+RED        = RGBColor(0xDC, 0x26, 0x26)   # red
+PURPLE     = RGBColor(0x6D, 0x28, 0xD9)   # purple
+GREEN_DIM  = RGBColor(0xDC, 0xFC, 0xE7)   # light green tint
+YELLOW_DIM = RGBColor(0xFE, 0xF3, 0xC7)   # light yellow tint
+RED_DIM    = RGBColor(0xFE, 0xE2, 0xE2)   # light red tint
+BLUE_DIM   = RGBColor(0xDB, 0xEA, 0xFE)   # light blue tint
 
 SLIDE_W = Inches(13.33)
 SLIDE_H = Inches(7.5)
@@ -52,6 +53,9 @@ def bg(slide, color=BG_DARK):
     fill.solid()
     fill.fore_color.rgb = color
 
+# Alias for clarity in slide functions
+BG = BG_DARK
+
 
 def box(slide, x, y, w, h, fill_color=SURFACE, line_color=BORDER, line_width=Pt(0.75)):
     """Add a rounded-rect card."""
@@ -70,7 +74,7 @@ def box(slide, x, y, w, h, fill_color=SURFACE, line_color=BORDER, line_width=Pt(
 
 
 def label(slide, text, x, y, w, h,
-          size=11, bold=False, color=WHITE,
+          size=11, bold=False, color=TEXT,
           align=PP_ALIGN.LEFT, italic=False, wrap=True):
     """Add a text box."""
     txb = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
@@ -145,7 +149,7 @@ def slide_title(prs):
     # Main title
     label(sl, "Radiological Health Program",
           0.5, 1.8, 12, 0.7,
-          size=32, bold=True, color=WHITE)
+          size=32, bold=True, color=TEXT)
     label(sl, "Modernization Initiative",
           0.5, 2.45, 12, 0.6,
           size=26, bold=False, color=ACCENT)
@@ -167,7 +171,7 @@ def slide_title(prs):
           0.5, 4.95, 12.5, 0.35, size=9, color=MUTED)
 
     # Icon watermark area
-    label(sl, "☢", 9.5, 1.5, 3.5, 3.5, size=120, color=RGBColor(0x1A, 0x1F, 0x35), align=PP_ALIGN.CENTER)
+    label(sl, "☢", 9.5, 1.5, 3.5, 3.5, size=120, color=RGBColor(0xC0, 0xD4, 0xF0), align=PP_ALIGN.CENTER)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -181,7 +185,7 @@ def slide_overview(prs):
     # Header bar
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "Project Overview", 0.3, 0.1, 8, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "Project Overview", 0.3, 0.1, 8, 0.5, size=16, bold=True, color=TEXT)
     pill(sl, "Overall: YELLOW", 11.2, 0.17, 1.9, 0.36, YELLOW_DIM, YELLOW, size=9)
 
     # Description card
@@ -191,7 +195,7 @@ def slide_overview(prs):
           "The Radiological Health Program (RHP) is launching a strategic modernization initiative to transition "
           "its permitting and licensing application pipeline from legacy, manual workflows to a centralized "
           "online portal and electronic payment module.",
-          0.55, 1.18, 12.2, 0.9, size=10.5, color=WHITE, wrap=True)
+          0.55, 1.18, 12.2, 0.9, size=10.5, color=TEXT, wrap=True)
 
     # Health status indicators
     label(sl, "HEALTH STATUS INDICATORS", 0.3, 2.42, 5, 0.25, size=7, bold=True, color=MUTED)
@@ -210,7 +214,7 @@ def slide_overview(prs):
         box(sl, cx, 2.72, card_w, 1.05, fill_color=SURFACE2)
         status_circle(sl, letter, cx + 0.82, 2.80, status=status)
         label(sl, name, cx, 3.26, card_w, 0.3, size=9, bold=True,
-              color=WHITE, align=PP_ALIGN.CENTER)
+              color=TEXT, align=PP_ALIGN.CENTER)
 
     # Yellow status rationale
     box(sl, 0.3, 3.92, 12.7, 0.92, fill_color=YELLOW_DIM, line_color=YELLOW)
@@ -220,7 +224,7 @@ def slide_overview(prs):
           "These changes are not expected to impact overall project delivery. "
           "The team is actively hiring a Tech Lead to prevent future environmental and build blockers, "
           "as key agency technical resources are engaged in other internal initiatives.",
-          0.55, 4.24, 12.1, 0.55, size=9.5, color=WHITE, wrap=True)
+          0.55, 4.24, 12.1, 0.55, size=9.5, color=TEXT, wrap=True)
 
     hline(sl, 0.3, 5.05, 12.7)
     label(sl, "Reporting Period: FY26  ·  Jun 12, 2026", 0.3, 5.12, 12.7, 0.3,
@@ -237,7 +241,7 @@ def slide_sprints(prs):
 
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "Sprint Schedule & Delivery Milestones", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "Sprint Schedule & Delivery Milestones", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=TEXT)
     pill(sl, "Sprint 2: IN PROGRESS", 10.6, 0.17, 2.45, 0.36, BLUE_DIM, ACCENT, size=9)
 
     sprints = [
@@ -264,17 +268,17 @@ def slide_sprints(prs):
         box(sl, 0.3, y, 12.7, row_h, fill_color=SURFACE)
 
         # Sprint label
-        label(sl, name, 0.5, y + 0.07, 1.1, 0.3, size=11, bold=True, color=WHITE)
+        label(sl, name, 0.5, y + 0.07, 1.1, 0.3, size=11, bold=True, color=TEXT)
 
         # Dates
         label(sl, dates, 0.5, y + 0.42, 1.8, 0.28, size=8, color=MUTED)
 
         # Goal text
-        label(sl, goal, 1.75, y + 0.12, 7.3, 0.55, size=9, color=WHITE, wrap=True)
+        label(sl, goal, 1.75, y + 0.12, 7.3, 0.55, size=9, color=TEXT, wrap=True)
 
         # Progress bar
         progress_bar(sl, 9.4, y + 0.22, 2.2, 0.16, pct, fill_color=bar_color)
-        label(sl, f"{pct}%", 11.68, y + 0.17, 0.45, 0.26, size=8, bold=True, color=WHITE)
+        label(sl, f"{pct}%", 11.68, y + 0.17, 0.45, 0.26, size=8, bold=True, color=TEXT)
 
         # Status pill
         bg_c, txt_c = status_colors[status]
@@ -295,7 +299,7 @@ def slide_financials(prs):
 
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "Financial Summary", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "Financial Summary", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=TEXT)
     pill(sl, "Cost Status: GREEN", 11.0, 0.17, 2.0, 0.36, GREEN_DIM, GREEN, size=9)
 
     # ── KPI cards ──────────────────────────────────────────────────────────────
@@ -303,7 +307,7 @@ def slide_financials(prs):
         ("Total Approved",  "$6.0M",   "FY25–FY26 Combined",  ACCENT, BLUE_DIM),
         ("Total Forecast",  "$3.70M",  "FY25–FY28 All Years", YELLOW, YELLOW_DIM),
         ("Total Actual",    "$1.45M",  "FY25 + FY26 Spent",   GREEN,  GREEN_DIM),
-        ("Remaining",       "$1.55M",  "Balance / Variance",  PURPLE, RGBColor(0x4A,0x1F,0x78)),
+        ("Remaining",       "$1.55M",  "Balance / Variance",  PURPLE, RGBColor(0xED, 0xE9, 0xFE)),
     ]
     kw = 3.08
     for i, (lbl, val, sub, col, bg_col) in enumerate(kpis):
@@ -337,9 +341,9 @@ def slide_financials(prs):
         is_total  = r == len(table_data) - 1
 
         if is_header:
-            row_bg = RGBColor(0x0E, 0x12, 0x25)
-        elif is_total:
             row_bg = BLUE_DIM
+        elif is_total:
+            row_bg = RGBColor(0xDB, 0xEA, 0xFE)
         elif r % 2 == 0:
             row_bg = SURFACE2
         else:
@@ -353,13 +357,13 @@ def slide_financials(prs):
                 txt_color = MUTED
                 fsize, fbold = 7.5, True
             elif is_total:
-                txt_color = WHITE
+                txt_color = TEXT
                 fsize, fbold = 9.5, True
             elif c_idx == 4 and cell_text not in ("$0", "—"):
                 txt_color = GREEN
                 fsize, fbold = 9, True
             else:
-                txt_color = WHITE if c_idx == 0 else MUTED
+                txt_color = TEXT
                 fsize, fbold = 9, c_idx == 0
 
             align = PP_ALIGN.CENTER if c_idx == 0 else (
@@ -381,7 +385,7 @@ def slide_financials(prs):
         y = 5.1 + i * 0.45
         label(sl, fy, 0.3, y, 0.65, 0.32, size=9, color=MUTED)
         progress_bar(sl, 1.1, y + 0.06, 9.0, 0.2, pct, fill_color=col)
-        label(sl, f"{pct}%", 10.2, y, 0.7, 0.32, size=9, bold=True, color=WHITE)
+        label(sl, f"{pct}%", 10.2, y, 0.7, 0.32, size=9, bold=True, color=TEXT)
 
     hline(sl, 0.3, 7.15, 12.7)
     label(sl, "PCA: 79103  ·  Object Code: Radiation Control Fund", 0.3, 7.2, 12.7, 0.25,
@@ -398,7 +402,7 @@ def slide_mvp(prs):
 
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "MVP Capabilities — Groups 3 through 9", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "MVP Capabilities — Groups 3 through 9", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=TEXT)
 
     capabilities = [
         ("📄", "Portal Submissions",
@@ -412,13 +416,13 @@ def slide_mvp(prs):
          YELLOW, YELLOW_DIM),
         ("📥", "RHP Team Inbox",
          "Automated notifications delivered to the MDE Business User (RHP Team) inbox.",
-         PURPLE, RGBColor(0x3A,0x15,0x60)),
+         PURPLE, RGBColor(0xED, 0xE9, 0xFE)),
         ("📁", "Document Management",
          "Secure view, download of applications and supporting documents — individual files or ZIP.",
-         RGBColor(0xFF,0x7F,0x50), RGBColor(0x70,0x30,0x15)),
+         RGBColor(0xC2, 0x41, 0x0C), RGBColor(0xFF, 0xED, 0xD5)),
         ("🔐", "IAM Authentication",
          "MDE Business User authentication via Identity and Access Management (IAM) protocols.",
-         RGBColor(0x06,0xB6,0xD4), RGBColor(0x07,0x45,0x55)),
+         RGBColor(0x08, 0x91, 0xB2), RGBColor(0xCC, 0xF0, 0xF8)),
     ]
 
     cols = 3
@@ -443,12 +447,12 @@ def slide_mvp(prs):
         circ.fill.solid(); circ.fill.fore_color.rgb = SURFACE2
         circ.line.fill.background()
         label(sl, icon, x + 0.18, y + 0.17, 0.52, 0.52,
-              size=16, align=PP_ALIGN.CENTER, color=WHITE)
+              size=16, align=PP_ALIGN.CENTER, color=TEXT)
 
         label(sl, name, x + 0.85, y + 0.22, card_w - 0.98, 0.35,
-              size=11, bold=True, color=WHITE)
+              size=11, bold=True, color=TEXT)
         label(sl, desc, x + 0.18, y + 0.82, card_w - 0.36, 0.85,
-              size=9, color=RGBColor(0xCC, 0xD1, 0xE8), wrap=True)
+              size=9, color=MUTED, wrap=True)
 
     hline(sl, 0.3, 7.15, 12.7)
     label(sl, "Groups 1–2 configuration and setup planned in Sprint 5", 0.3, 7.2, 12.7, 0.25,
@@ -465,7 +469,7 @@ def slide_risks(prs):
 
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "Risks, Impediments & Action Items", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "Risks, Impediments & Action Items", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=TEXT)
 
     # ── Risks ──────────────────────────────────────────────────────────────────
     label(sl, "ACTIVE RISKS & IMPEDIMENTS", 0.3, 0.88, 6, 0.26, size=7.5, bold=True, color=MUTED)
@@ -491,9 +495,9 @@ def slide_risks(prs):
     for i, (level, col, bg_col, title, desc, strategy) in enumerate(risks):
         y = 1.22 + i * 1.28
         box(sl, 0.3, y, 9.5, 1.12, fill_color=bg_col, line_color=col, line_width=Pt(0.75))
-        pill(sl, level, 0.45, y + 0.12, 0.72, 0.28, col, BG_DARK, size=7.5)
-        label(sl, title, 1.3, y + 0.1, 8.0, 0.3, size=10.5, bold=True, color=WHITE)
-        label(sl, desc, 0.45, y + 0.48, 9.1, 0.58, size=8.5, color=RGBColor(0xCC, 0xD1, 0xE8), wrap=True)
+        pill(sl, level, 0.45, y + 0.12, 0.72, 0.28, col, WHITE, size=7.5)
+        label(sl, title, 1.3, y + 0.1, 8.0, 0.3, size=10.5, bold=True, color=TEXT)
+        label(sl, desc, 0.45, y + 0.48, 9.1, 0.58, size=8.5, color=MUTED, wrap=True)
 
         # Strategy tag
         box(sl, 9.95, y, 3.05, 1.12, fill_color=SURFACE)
@@ -518,7 +522,7 @@ def slide_risks(prs):
         # Top color stripe
         stripe = sl.shapes.add_shape(1, Inches(x), Inches(5.44), Inches(aw), Inches(0.055))
         stripe.fill.solid(); stripe.fill.fore_color.rgb = col; stripe.line.fill.background()
-        label(sl, title, x + 0.14, 5.52, aw - 0.28, 0.3, size=10, bold=True, color=WHITE)
+        label(sl, title, x + 0.14, 5.52, aw - 0.28, 0.3, size=10, bold=True, color=TEXT)
         label(sl, desc, x + 0.14, 5.86, aw - 0.28, 1.0, size=8.5, color=MUTED, wrap=True)
 
     hline(sl, 0.3, 7.15, 12.7)
@@ -536,7 +540,7 @@ def slide_successes(prs):
 
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "Successes & Key Progress — Reporting Period", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "Successes & Key Progress — Reporting Period", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=TEXT)
 
     successes = [
         ("✅", GREEN,  "MVP Release Development",
@@ -561,10 +565,10 @@ def slide_successes(prs):
         bar.fill.solid(); bar.fill.fore_color.rgb = col; bar.line.fill.background()
 
         # Icon
-        label(sl, icon, 0.55, y + 0.22, 0.65, 0.65, size=26, align=PP_ALIGN.CENTER, color=WHITE)
+        label(sl, icon, 0.55, y + 0.22, 0.65, 0.65, size=26, align=PP_ALIGN.CENTER, color=TEXT)
 
-        label(sl, title, 1.38, y + 0.18, 11.2, 0.38, size=13, bold=True, color=WHITE)
-        label(sl, desc,  1.38, y + 0.6,  11.2, 0.95, size=9.5, color=RGBColor(0xCC,0xD1,0xE8), wrap=True)
+        label(sl, title, 1.38, y + 0.18, 11.2, 0.38, size=13, bold=True, color=TEXT)
+        label(sl, desc,  1.38, y + 0.6,  11.2, 0.95, size=9.5, color=MUTED, wrap=True)
 
     hline(sl, 0.3, 7.15, 12.7)
     label(sl, "Sprint 1 completed successfully  ·  Sprint 2 currently in progress (Jul 1–14, 2026)",
@@ -581,7 +585,7 @@ def slide_summary(prs):
 
     hdr = sl.shapes.add_shape(1, Inches(0), Inches(0), SLIDE_W, Inches(0.7))
     hdr.fill.solid(); hdr.fill.fore_color.rgb = SURFACE; hdr.line.fill.background()
-    label(sl, "Executive Summary & Next Steps", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=WHITE)
+    label(sl, "Executive Summary & Next Steps", 0.3, 0.1, 10, 0.5, size=16, bold=True, color=TEXT)
 
     # At-a-glance status row
     statuses = [
@@ -618,7 +622,7 @@ def slide_summary(prs):
         box(sl, x, 2.2, tw, th, fill_color=SURFACE)
         stripe = sl.shapes.add_shape(1, Inches(x), Inches(2.2), Inches(tw), Inches(0.06))
         stripe.fill.solid(); stripe.fill.fore_color.rgb = col; stripe.line.fill.background()
-        label(sl, title, x + 0.14, 2.32, tw - 0.28, 0.32, size=10.5, bold=True, color=WHITE)
+        label(sl, title, x + 0.14, 2.32, tw - 0.28, 0.32, size=10.5, bold=True, color=TEXT)
         label(sl, desc,  x + 0.14, 2.7,  tw - 0.28, 1.7, size=9, color=MUTED, wrap=True)
 
     # Next steps
@@ -637,7 +641,7 @@ def slide_summary(prs):
         box(sl, 0.3, y, 12.7, 0.38, fill_color=SURFACE2 if i % 2 == 0 else SURFACE)
         circ2 = sl.shapes.add_shape(9, Inches(0.42), Inches(y + 0.1), Inches(0.18), Inches(0.18))
         circ2.fill.solid(); circ2.fill.fore_color.rgb = col; circ2.line.fill.background()
-        label(sl, step,     0.72, y + 0.06, 3.2,  0.28, size=9.5, bold=True, color=WHITE)
+        label(sl, step,     0.72, y + 0.06, 3.2,  0.28, size=9.5, bold=True, color=TEXT)
         label(sl, timeline, 3.95, y + 0.06, 1.9,  0.28, size=9,   color=col)
         label(sl, detail,   5.92, y + 0.06, 7.0,  0.28, size=9,   color=MUTED)
 

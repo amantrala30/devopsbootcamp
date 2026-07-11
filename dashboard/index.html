@@ -8,20 +8,20 @@
   <style>
     /* ─── Design Tokens ──────────────────────────────────────────── */
     :root {
-      --bg:        #0f1117;
-      --surface:   #1a1d27;
-      --surface2:  #22263a;
-      --border:    #2e3350;
-      --text:      #e8eaf6;
-      --muted:     #8f96b3;
-      --accent:    #4f8ef7;
-      --green:     #22c55e;
-      --yellow:    #f59e0b;
-      --red:       #ef4444;
-      --blue:      #3b82f6;
-      --purple:    #a855f7;
+      --bg:        #f0f6ff;
+      --surface:   #ffffff;
+      --surface2:  #e5eefc;
+      --border:    #c4d2eb;
+      --text:      #0f172a;
+      --muted:     #4a5a82;
+      --accent:    #2563eb;
+      --green:     #16803d;
+      --yellow:    #d97706;
+      --red:       #dc2626;
+      --blue:      #2563eb;
+      --purple:    #6d28d9;
       --radius:    12px;
-      --shadow:    0 4px 24px rgba(0,0,0,.45);
+      --shadow:    0 4px 24px rgba(100,120,180,.12);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +36,7 @@
 
     /* ─── Header ─────────────────────────────────────────────────── */
     header {
-      background: linear-gradient(135deg, #1a2040 0%, #0f1117 100%);
+      background: linear-gradient(135deg, #dbeafe 0%, #f0f6ff 100%);
       border-bottom: 1px solid var(--border);
       padding: 28px 40px 24px;
       display: flex;
@@ -49,7 +49,7 @@
       font-size: 1.55rem;
       font-weight: 700;
       letter-spacing: -.3px;
-      color: #fff;
+      color: var(--text);
     }
     .header-left p {
       font-size: .85rem;
@@ -72,8 +72,8 @@
       letter-spacing: .5px;
       text-transform: uppercase;
     }
-    .badge-yellow { background: rgba(245,158,11,.15); color: var(--yellow); border: 1px solid rgba(245,158,11,.35); }
-    .badge-green  { background: rgba(34,197,94,.15);  color: var(--green);  border: 1px solid rgba(34,197,94,.35); }
+    .badge-yellow { background: #fef3c7; color: var(--yellow); border: 1px solid #d97706; }
+    .badge-green  { background: #dcfce7;  color: var(--green);  border: 1px solid #16803d; }
     .badge-red    { background: rgba(239,68,68,.15);  color: var(--red);    border: 1px solid rgba(239,68,68,.35); }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 
@@ -200,9 +200,9 @@
       font-weight: 800;
       margin: 0 auto 8px;
     }
-    .si-green  { background: rgba(34,197,94,.2);  color: var(--green); }
-    .si-yellow { background: rgba(245,158,11,.2); color: var(--yellow); }
-    .si-red    { background: rgba(239,68,68,.2);  color: var(--red); }
+    .si-green  { background: #dcfce7; color: var(--green); border: 2px solid var(--green); }
+    .si-yellow { background: #fef3c7; color: var(--yellow); border: 2px solid var(--yellow); }
+    .si-red    { background: #fee2e2; color: var(--red); border: 2px solid var(--red); }
     .status-name {
       font-size: .72rem;
       font-weight: 600;
@@ -240,9 +240,9 @@
       border-radius: 999px;
       white-space: nowrap;
     }
-    .ss-complete     { background: rgba(34,197,94,.15);  color: var(--green);  border: 1px solid rgba(34,197,94,.3); }
-    .ss-inprogress   { background: rgba(79,142,247,.15); color: var(--accent); border: 1px solid rgba(79,142,247,.3); }
-    .ss-notstarted   { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
+    .ss-complete     { background: #dcfce7; color: var(--green);  border: 1px solid var(--green); }
+    .ss-inprogress   { background: #dbeafe; color: var(--accent); border: 1px solid var(--accent); }
+    .ss-notstarted   { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
     .sprint-bar-wrap {
       width: 80px;
       height: 6px;
@@ -270,7 +270,7 @@
     }
     td {
       padding: 10px 12px;
-      border-bottom: 1px solid rgba(46,51,80,.5);
+      border-bottom: 1px solid var(--border);
       color: var(--text);
     }
     tr:last-child td { border-bottom: none; }
@@ -482,7 +482,7 @@
           <div class="status-name">Resources</div>
         </div>
       </div>
-      <div style="margin-top:20px;padding:14px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;">
+      <div style="margin-top:20px;padding:14px;background:#fef3c7;border:1px solid #d97706;border-radius:8px;">
         <p style="font-size:.75rem;color:var(--yellow);font-weight:700;margin-bottom:4px;">⚠ Overall: Yellow</p>
         <p style="font-size:.74rem;color:var(--muted);line-height:1.5;">Environment and resource changes have been identified. These changes are not expected to impact overall project delivery. A Tech Lead is being hired to address environmental and build blockers.</p>
       </div>
@@ -803,7 +803,7 @@
         {
           label: 'Actual',
           data: [275086, 1177504, null, null],
-          backgroundColor: 'rgba(34,197,94,.35)',
+          backgroundColor: '#16803d',
           borderColor: 'rgba(34,197,94,.9)',
           borderWidth: 1.5,
           borderRadius: 4,
@@ -816,7 +816,7 @@
       plugins: {
         legend: {
           labels: {
-            color: '#8f96b3',
+            color: '#4a5a82',
             font: { size: 11 },
             boxWidth: 12,
           },
@@ -832,16 +832,16 @@
       },
       scales: {
         x: {
-          ticks: { color: '#8f96b3', font: { size: 11 } },
-          grid: { color: 'rgba(46,51,80,.5)' },
+          ticks: { color: '#4a5a82', font: { size: 11 } },
+          grid: { color: 'rgba(196,210,235,.8)' },
         },
         y: {
           ticks: {
-            color: '#8f96b3',
+            color: '#4a5a82',
             font: { size: 10 },
             callback: v => '$' + (v / 1000000).toFixed(1) + 'M',
           },
-          grid: { color: 'rgba(46,51,80,.5)' },
+          grid: { color: 'rgba(196,210,235,.8)' },
           beginAtZero: true,
         },
       },
