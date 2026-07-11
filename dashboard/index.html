@@ -170,7 +170,7 @@
     .card-title {
       font-size: .88rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
       margin-bottom: 4px;
     }
     .card-sub {
@@ -212,39 +212,43 @@
     }
 
     /* ─── Sprint Table ────────────────────────────────────────────── */
-    .sprint-list { display: flex; flex-direction: column; gap: 10px; }
+    .sprint-list { display: flex; flex-direction: column; gap: 8px; }
     .sprint-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 68px 130px 1fr 90px auto;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 11px 16px;
     }
     .sprint-label {
       font-size: .8rem;
       font-weight: 700;
       color: var(--text);
-      min-width: 60px;
     }
     .sprint-dates {
-      font-size: .72rem;
+      font-size: .71rem;
       color: var(--muted);
-      flex: 1;
+    }
+    .sprint-goal {
+      font-size: .73rem;
+      color: var(--text);
+      line-height: 1.35;
     }
     .sprint-status {
-      font-size: .7rem;
+      font-size: .68rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 999px;
       white-space: nowrap;
+      text-align: center;
     }
     .ss-complete     { background: #dcfce7; color: var(--green);  border: 1px solid var(--green); }
     .ss-inprogress   { background: #dbeafe; color: var(--accent); border: 1px solid var(--accent); }
-    .ss-notstarted   { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .ss-notstarted   { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
     .sprint-bar-wrap {
-      width: 80px;
       height: 6px;
       background: var(--border);
       border-radius: 3px;
@@ -277,7 +281,7 @@
     tr:hover td { background: rgba(255,255,255,.03); }
     .td-right { text-align: right; }
     .td-green { color: var(--green); font-weight: 600; }
-    .td-total { font-weight: 700; color: #fff; background: rgba(79,142,247,.07) !important; }
+    .td-total { font-weight: 700; color: var(--text); background: #dbeafe !important; }
 
     /* ─── MVP Capabilities ────────────────────────────────────────── */
     .mvp-grid {
@@ -389,6 +393,46 @@
     }
 
     canvas { max-height: 240px; }
+
+    /* ─── Section Divider inside card ────────────────────────────── */
+    .card-section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 18px 0 16px;
+    }
+    .card-section-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ─── Compact success items ───────────────────────────────────── */
+    .success-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .success-item:last-child { margin-bottom: 0; }
+    .success-item .s-title {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 2px;
+    }
+    .success-item .s-desc {
+      font-size: .72rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
@@ -496,36 +540,42 @@
         <div class="sprint-row">
           <span class="sprint-label">Sprint 1</span>
           <span class="sprint-dates">Jun 17 – Jun 30, 2026</span>
+          <span class="sprint-goal">Group 3–9: PDF Portal Submissions &amp; Electronic Payments enabled</span>
           <div class="sprint-bar-wrap"><div class="sprint-bar" style="width:100%;background:var(--green);"></div></div>
           <span class="sprint-status ss-complete">Complete</span>
         </div>
         <div class="sprint-row">
           <span class="sprint-label">Sprint 2</span>
           <span class="sprint-dates">Jul 1 – Jul 14, 2026</span>
+          <span class="sprint-goal">Group 3–9: Enable Notifications for customers &amp; RHP Team Inbox</span>
           <div class="sprint-bar-wrap"><div class="sprint-bar" style="width:64%;background:var(--accent);"></div></div>
           <span class="sprint-status ss-inprogress">In Progress</span>
         </div>
         <div class="sprint-row">
           <span class="sprint-label">Sprint 3</span>
           <span class="sprint-dates">Jul 15 – Jul 28, 2026</span>
+          <span class="sprint-goal">Group 3–9: Provide option to download RHP permits</span>
           <div class="sprint-bar-wrap"><div class="sprint-bar" style="width:0%;background:var(--muted);"></div></div>
           <span class="sprint-status ss-notstarted">Not Started</span>
         </div>
         <div class="sprint-row">
           <span class="sprint-label">Sprint 4</span>
           <span class="sprint-dates">Jul 29 – Aug 11, 2026</span>
+          <span class="sprint-goal">Group 3–9: Reject &amp; update status (CRM) for RHP permits</span>
           <div class="sprint-bar-wrap"><div class="sprint-bar" style="width:0%;background:var(--muted);"></div></div>
           <span class="sprint-status ss-notstarted">Not Started</span>
         </div>
         <div class="sprint-row">
           <span class="sprint-label">Sprint 5</span>
           <span class="sprint-dates">TBD — Next</span>
+          <span class="sprint-goal">Group 1–2: Configuration and setup</span>
           <div class="sprint-bar-wrap"><div class="sprint-bar" style="width:0%;background:var(--muted);"></div></div>
           <span class="sprint-status ss-notstarted">Not Started</span>
         </div>
         <div class="sprint-row">
           <span class="sprint-label">Sprint 6</span>
           <span class="sprint-dates">TBD — Next</span>
+          <span class="sprint-goal">Group 3–9: Web Forms Development</span>
           <div class="sprint-bar-wrap"><div class="sprint-bar" style="width:0%;background:var(--muted);"></div></div>
           <span class="sprint-status ss-notstarted">Not Started</span>
         </div>
@@ -624,10 +674,10 @@
     </div>
   </div>
 
-  <!-- Row 3: MVP Capabilities + Action Items + Risks -->
+  <!-- Row 3: MVP Capabilities + Successes (combined) | Action Items + Risks -->
   <div class="grid-2">
 
-    <!-- MVP Capabilities -->
+    <!-- Left: MVP Capabilities + Successes in one card -->
     <div class="card">
       <div class="card-title">MVP Capabilities</div>
       <div class="card-sub">Core features targeted for the initial release (Groups 3–9)</div>
@@ -673,6 +723,29 @@
             <div class="mvp-name">IAM Authentication</div>
             <div class="mvp-desc">MDE Business User auth via Identity &amp; Access Management</div>
           </div>
+        </div>
+      </div>
+
+      <!-- Successes — merged into this card -->
+      <hr class="card-section-divider" />
+      <p class="card-section-label">Key Achievements &amp; Progress Highlights</p>
+
+      <div class="success-item">
+        <div>
+          <div class="s-title">✅ MVP Release Development</div>
+          <div class="s-desc">Actively working on MVP release for New Applications (Groups 3–9). Re-certification and Renewal workflows under review pending Liability Check clarification.</div>
+        </div>
+      </div>
+      <div class="success-item">
+        <div>
+          <div class="s-title">✅ ESC Page Validations &amp; Verification</div>
+          <div class="s-desc">RHP Configuration Template under development to govern ESC Portal page validations and ensure data integrity across all submissions.</div>
+        </div>
+      </div>
+      <div class="success-item">
+        <div>
+          <div class="s-title">✅ Authentication &amp; Database Restructuring</div>
+          <div class="s-desc">MDE Business User authentication via IAM commenced; legacy RHP database tables restructured to support modern workflows.</div>
         </div>
       </div>
     </div>
@@ -738,35 +811,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- Row 4: Successes -->
-  <div class="card" style="margin-top:24px;">
-    <div class="card-title">Successes This Reporting Period</div>
-    <div class="card-sub">Key achievements and progress highlights</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:4px;">
-      <div class="item-row">
-        <div class="item-bullet" style="background:var(--green);margin-top:6px;"></div>
-        <div class="item-text">
-          <strong>MVP Release Development</strong>
-          Actively working on MVP release for New Applications (Groups 3–9). Re-certification and Renewal workflows under review pending Liability Check clarification.
-        </div>
-      </div>
-      <div class="item-row">
-        <div class="item-bullet" style="background:var(--green);margin-top:6px;"></div>
-        <div class="item-text">
-          <strong>ESC Page Validations &amp; Verification</strong>
-          RHP Configuration Template under development to govern ESC Portal page validations.
-        </div>
-      </div>
-      <div class="item-row">
-        <div class="item-bullet" style="background:var(--green);margin-top:6px;"></div>
-        <div class="item-text">
-          <strong>Authentication &amp; Database Restructuring</strong>
-          MDE Business User authentication via IAM commenced; legacy RHP database tables restructured to support modern workflows.
-        </div>
-      </div>
     </div>
   </div>
 
